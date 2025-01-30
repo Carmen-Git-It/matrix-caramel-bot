@@ -1,1 +1,0 @@
-# Matrix bot that will ideally post random images of frogs to a Matrix server.
