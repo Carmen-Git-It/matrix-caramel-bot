@@ -13,19 +13,22 @@ TOTAL_FROGS = 10845
 
 def get_frog():
     # it's actually ceil don't @ me I want full pages of frogs
+    htmldata = requests.get(FROG_URL)
+    soup = BeautifulSoup(htmldata.text, 'html.parser')
+    tmpfile = soup.find_all("input", {"name": "tmpfile"})
+    print(tmpfile[0]['value'])
+
     total_pages = floor(TOTAL_FROGS / 24)
     page_start = floor(random() * (total_pages - 1)) * 24
-    data = {'query_src':'', 'tmpfile': '462539', 'num-matches':'10845', 'max':'24', 'prevwhere':'', 'button_flag': '',
+    data = {'query_src':'', 'tmpfile': '{tmp_file}'.format(tmp_file=tmpfile[0]['value']), 'num-matches':'10845', 'max':'24', 'prevwhere':'', 'button_flag': '',
             'prevselect':'*', 'table':'img', 'special':'', 'OK2SHOWPRIVATE':'', 'display2':'', 'display3': '',
             'display4': '', 'display5': '', 'display6': '', 'display7': '', 'display8': '', 'display9': '',
             'display10':'', 'display11': '', 'display12': '', 'display13': '', 'title_tag': '', 'next': 'next+24',
             'row-to-start' : '{row_start}'.format(row_start=page_start)}
-    htmldata = requests.get(FROG_URL)
+
     htmldata = requests.post(FROG_URL, headers = {'Content-Type': 'application/x-www-form-urlencoded'}, data=data)
     soup = BeautifulSoup(htmldata.text, 'html.parser')
     frogs = soup.find_all('img')
-
-    print(htmldata.text)
 
     frog = floor(random() * frogs.__len__())
     url_split = frogs[frog]['src'].split('.')
@@ -37,3 +40,5 @@ def get_frog():
         print('image downloaded: frog.' + file_extension)
     print('frog.' + file_extension)
     return 'frog.' + file_extension
+
+get_frog()
