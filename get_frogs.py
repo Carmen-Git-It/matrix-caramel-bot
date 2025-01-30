@@ -40,5 +40,3 @@ def get_frog():
         print('image downloaded: frog.' + file_extension)
     print('frog.' + file_extension)
     return 'frog.' + file_extension
-
-get_frog()
